@@ -1,8 +1,9 @@
 # contains the entities declaration and definition of medicine information
 from protorpc import messages
+from google.appengine.ext import ndb
+from google.appengine.ext.ndb import msgprop#alpha feature dangerous
 
-
-package = "Medicine Info"
+#contains the real entities that we are going to model in for db purpose
 class Dossage(messages.Message):
     class Units(messages.Enum):
         MICRO_GRAM=1
@@ -37,5 +38,11 @@ class Medicine(messages.Message):
                              required=True)
 
     description=messages.StringField(6)
-    
-    
+
+#handles the format the request will come    
+class MedicineMessage(messages.Message):
+    medicine=messages.MessageField(Medicine,1)
+#handles the storage of data in datastore
+class MedicineStore(ndb.Model):
+    medicine=msgprop.MessageProperty(Medicine,indexed_fields=['name'])
+    #warning this feature is in alpha

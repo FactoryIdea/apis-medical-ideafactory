@@ -15,9 +15,12 @@ med1.composition=[composition1,composition2]
 med1.medicine_type=Medicine.MedicineType.KAMAL
 med1.dossage=dossage
 med1.description="YO"
+qry = MedicineStore.query(MedicineStore.medicine.name == "kamal").fetch()
+
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
+        self.response.write(str(qry[0].medicine.description))
         self.response.write(str(med1.mrp[0].value)+" "+str(med1.composition[1].name)+" ")
         self.response.write(str(med1.name)+" "+str(med1.dossage.units) +" ")
         self.response.write(str(composition1.name)+" "+str(composition1.dossage.units) +" ")

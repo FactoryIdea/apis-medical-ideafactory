@@ -3,3 +3,16 @@ version: 1
 runtime: python27
 api_version: 1
 threadsafe: true
+
+handlers:
+- url: /
+  script: test_medicine_api_messages.yo
+- url: /_ah/spi/.*
+  script: medicine_api.APPLICATION
+
+
+libraries:
+
+- name: endpoints
+  version: 1.0
+  
