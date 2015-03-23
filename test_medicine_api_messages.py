@@ -12,10 +12,10 @@ med1=Medicine()
 med1.name="yeh hei"
 med1.mrp=[Cost(value=88,currency="Ruppes")]
 med1.composition=[composition1,composition2]
-med1.medicine_type=Medicine.MedicineType.KAMAL
+med1.medicine_type=Medicine.MedicineType.NULLL
 med1.dossage=dossage
 med1.description="YO"
-qry = MedicineStore.query(MedicineStore.medicine.name == "kamal").fetch()
+qry = MedicineStore.query(MedicineStore.medicine.name == "Adam").fetch()
 
 
 class MainPage(webapp2.RequestHandler):
