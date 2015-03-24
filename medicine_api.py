@@ -26,11 +26,42 @@ class MedicineInfoApi(remote.Service):
                       allowed_client_ids=[WEB_CLIENT_ADMIN_ID]
                         )
       def insert_medicine(self,request):
+          medicine=request.medicine
+          medicine.name= medicine.name.lower()
+          medicine.company_name=medicine.company_name.lower()
           response=MedicineStore(medicine=request.medicine).put()
           ##TODO return the response instead of request
+          
           return request
 
-
+      @endpoints.method(MedicineNameMessage,MedicineListMessage,
+                      path='medicineget',http_method='GET',
+                      name='medicineInfo.getmedicine'
+                       )
+      def get_medicine(self,request):
+           #TODO make the query compound  
+           offset=request.offset
+           limit=request.limit
+           query=MedicineStore.query()
+           if(request.name is not None):
+                 name=request.name.lower()
+                 query=query.filter(MedicineStore.medicine.name == name)
+           if(request.company_name is not None):
+                 cname=request.company_name.lower()
+                 query=query.filter(MedicineStore.medicine.company_name == cname)
+           if(request.medicine_type is not None):
+                 med_type=request.medicine_type
+                 query=query.filter(MedicineStore.medicine.medicine_type == med_type)
+                   
+           
+           mediList=[]
+           qryArray=[]
+           if query is not None:
+                 qryArray=query.fetch(limit=limit,offset=offset)
+           for q in qryArray:
+                 mediList.append(q.medicine)
+         
+           return MedicineListMessage(medicine_list=mediList)
 
 
 APPLICATION = endpoints.api_server([MedicineInfoApi],

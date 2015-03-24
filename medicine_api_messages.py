@@ -50,10 +50,25 @@ class Medicine(messages.Message):
     description=messages.StringField(6)
     company_name=messages.StringField(7,required=True)
 
-#handles the format the request will come    
+#handles the format the request will come
+#Request class for inset Api method    
 class MedicineMessage(messages.Message):
     medicine=messages.MessageField(Medicine,1)
+
+class MedicineNameMessage(messages.Message):
+    limit=messages.IntegerField(1,default=10,required=False)
+    offset=messages.IntegerField(2,default=0,required=False)
+    name=messages.StringField(3)
+    company_name=messages.StringField(4)
+    medicine_type=messages.EnumField('Medicine.MedicineType',5)
+
+
+class MedicineListMessage(messages.Message):
+    medicine_list=messages.MessageField(Medicine,1,repeated=True)
+
+
 #handles the storage of data in datastore
 class MedicineStore(ndb.Model):
-    medicine=msgprop.MessageProperty(Medicine,indexed_fields=['name'])
+    medicine=msgprop.MessageProperty(Medicine,indexed_fields=['name','medicine_type',
+                            'company_name',"composition.name"])
     #warning this feature is in alpha
