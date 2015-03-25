@@ -17,7 +17,7 @@ WEB_CLIENT_ADMIN_ID="adminstuff@adminstuff"
                                    endpoints.API_EXPLORER_CLIENT_ID],
                audiences=[],
                scopes=[endpoints.EMAIL_SCOPE],
-               description="API To ACCESS WEB SERVICES")
+               description="API To ACCESS WEB SERVICES For medical data")
 class MedicineInfoApi(remote.Service):
       #TODO ADD AUTHORIZATION
       @endpoints.method(MedicineMessage,MedicineMessage,
@@ -34,7 +34,7 @@ class MedicineInfoApi(remote.Service):
           
           return request
 
-      @endpoints.method(MedicineNameMessage,MedicineListMessage,
+      @endpoints.method(MedicineFieldMessage,MedicineListMessage,
                       path='medicineget',http_method='GET',
                       name='medicineInfo.getmedicine'
                        )
@@ -62,6 +62,30 @@ class MedicineInfoApi(remote.Service):
                  mediList.append(q.medicine)
          
            return MedicineListMessage(medicine_list=mediList)
+
+      @endpoints.method(MedicineCompostionMessage,MedicineListMessage,
+                      path='medicinegetbycomposition',http_method='GET',
+                      name='medicineInfo.getmedicinebycomposition'
+                       )
+      def get_medicine_bycomposition(self,request):
+           #TODO make the query compound  
+           offset=request.offset
+           limit=request.limit
+           query=MedicineStore.query()
+
+           for q in request.compostion_name:
+                 cname=q.lower()
+                 query=query.filter(MedicineStore.medicine.composition.name == cname )
+      
+           mediList=[]
+           qryArray=[]
+           if query is not None:
+                 qryArray=query.fetch(limit=limit,offset=offset)
+           for q in qryArray:
+                 mediList.append(q.medicine)
+         
+           return MedicineListMessage(medicine_list=mediList)
+
 
 
 APPLICATION = endpoints.api_server([MedicineInfoApi],

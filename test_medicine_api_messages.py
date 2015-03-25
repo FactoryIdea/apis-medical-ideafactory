@@ -15,7 +15,7 @@ med1.composition=[composition1,composition2]
 med1.medicine_type=Medicine.MedicineType.NULLL
 med1.dossage=dossage
 med1.description="YO"
-qry = MedicineStore.query(MedicineStore.medicine.name == "Adam").fetch()
+qry = MedicineStore.query(MedicineStore.medicine.composition.name == "gudia").fetch()
 
 
 class MainPage(webapp2.RequestHandler):

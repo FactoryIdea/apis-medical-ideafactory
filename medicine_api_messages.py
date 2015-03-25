@@ -55,14 +55,18 @@ class Medicine(messages.Message):
 class MedicineMessage(messages.Message):
     medicine=messages.MessageField(Medicine,1)
 
-class MedicineNameMessage(messages.Message):
+class MedicineFieldMessage(messages.Message):
     limit=messages.IntegerField(1,default=10,required=False)
     offset=messages.IntegerField(2,default=0,required=False)
     name=messages.StringField(3)
     company_name=messages.StringField(4)
     medicine_type=messages.EnumField('Medicine.MedicineType',5)
 
-
+class MedicineCompostionMessage(messages.Message):
+       limit=messages.IntegerField(1,default=10,required=False)
+       offset=messages.IntegerField(2,default=0,required=False)
+       compostion_name=messages.StringField(3,repeated=True)
+    
 class MedicineListMessage(messages.Message):
     medicine_list=messages.MessageField(Medicine,1,repeated=True)
 
