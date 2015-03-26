@@ -26,9 +26,15 @@ class MedicineInfoApi(remote.Service):
                       allowed_client_ids=[WEB_CLIENT_ADMIN_ID]
                         )
       def insert_medicine(self,request):
+          #Normilizing the fields
           medicine=request.medicine
           medicine.name= medicine.name.lower()
           medicine.company_name=medicine.company_name.lower()
+          i=0
+          for req in  medicine.composition:
+                 medicine.composition[i].name=req.name.lower()
+                                                
+    
           response=MedicineStore(medicine=request.medicine).put()
           ##TODO return the response instead of request
           
@@ -71,6 +77,7 @@ class MedicineInfoApi(remote.Service):
            #TODO make the query compound  
            offset=request.offset
            limit=request.limit
+
            query=MedicineStore.query()
 
            for q in request.compostion_name:

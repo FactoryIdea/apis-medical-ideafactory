@@ -25,6 +25,7 @@ class Composition(messages.Message):
     dossage=messages.MessageField(Dossage,2,required=True)
     description=messages.StringField(3,required=True)
 
+
 class Medicine(messages.Message):
     class MedicineType(messages.Enum):
         TABLET=1
