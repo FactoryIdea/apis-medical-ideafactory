@@ -8,7 +8,8 @@ handlers:
 - url: /
   script: test_medicine_api_messages.yo
 - url: /_ah/spi/.*
-  script: medicine_api.APPLICATION
+  script: launch_api.APPLICATION
+
 
 
 libraries:

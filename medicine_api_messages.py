@@ -3,7 +3,7 @@ from protorpc import messages
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb import msgprop#alpha feature dangerous
 
-#contains the real entities that we are going to model in for db purpose
+#contains the real entities that we are going to model in for medicine api purpose
 class Dossage(messages.Message):
     class Units(messages.Enum):
         MICRO_GRAM=1
@@ -52,7 +52,6 @@ class Medicine(messages.Message):
     company_name=messages.StringField(7,required=True)
 
 #handles the format the request will come
-#Request class for inset Api method    
 class MedicineMessage(messages.Message):
     medicine=messages.MessageField(Medicine,1)
 

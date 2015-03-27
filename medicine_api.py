@@ -95,7 +95,5 @@ class MedicineInfoApi(remote.Service):
 
 
 
-APPLICATION = endpoints.api_server([MedicineInfoApi],
-                                   restricted=False)
     
     
