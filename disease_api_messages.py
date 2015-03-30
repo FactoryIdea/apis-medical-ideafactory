@@ -23,6 +23,17 @@ class Disease(messages.Message):
 class DiseaseMessage(messages.Message):
     disease=messages.MessageField(Disease,1)
 
+class DiseaseAndSymptomsNameMessage(messages.Message):
+    limit=messages.IntegerField(1,default=10,required=False)
+    offset=messages.IntegerField(2,default=0,required=False)
+    ds_name=messages.StringField(3,repeated=True)
+    
+class DiseaseListMessage(messages.Message):
+    disease_list=messages.MessageField(Disease,1,repeated=True)
+
+#Do no forget to delete this one
+class SListMessage(messages.Message):
+    s_list=messages.MessageField(Symptoms,1,repeated=True)
 #handles the storage of data in datastore
 class DiseaseStore(ndb.Model):
     disease=msgprop.MessageProperty(Disease,indexed_fields=['primary_name',
@@ -37,3 +48,4 @@ class SymptomsStore(ndb.Model):
                             ])
     
     #warning this feature is in alpha
+

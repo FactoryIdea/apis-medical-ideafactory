@@ -57,3 +57,66 @@ class DiseaseInfoApi(remote.Service):
           ##TODO make complex arrangements so that the complexity of primary names and
           ##Secondry names can be removed
           return request
+
+      @endpoints.method(DiseaseAndSymptomsNameMessage,DiseaseListMessage,
+                      path='diseaseget_byName',http_method='GET',
+                      name='diseaseInfo.getdisease'
+                       )
+      def get_disease_byname(self,request):
+           offset=request.offset
+           limit=request.limit
+           query=DiseaseStore.query()
+           i=0
+           for q in request.ds_name:
+                request.ds_name[i]=q.lower()
+                i=i+1
+
+           if request.ds_name :
+            query=query.filter(DiseaseStore.disease.secondry_names.name.IN(request.ds_name))
+
+           diseaseList=[]
+           qryArray=[]
+           if query is not None:
+                 qryArray=query.fetch(limit=limit,offset=offset)
+           for q in qryArray:
+                 diseaseList.append(q.disease)
+         
+           return DiseaseListMessage(disease_list=diseaseList)
+
+      @endpoints.method(DiseaseAndSymptomsNameMessage,DiseaseListMessage,
+                      path='diseaseget_by_Symptoms_Name',http_method='GET',
+                      name='diseaseInfo.getdisease_bySymptoms'
+                       )
+      def get_disease_by_symptoms_name(self,request):
+           offset=request.offset
+           limit=request.limit
+           query=SymptomsStore.query(projection=[SymptomsStore.symptoms.primary_name], group_by=[SymptomsStore.symptoms.primary_name])
+           
+           i=0
+           for q in request.ds_name:
+                 request.ds_name[i]=q.lower()
+                 i=i+1
+
+           if request.ds_name :
+            query=query.filter(SymptomsStore.symptoms.secondry_names.name.IN(request.ds_name))
+
+           symptomsNameList=[]
+           qryArray=[]
+           if query is not None:
+                 qryArray=query.fetch(limit=limit,offset=offset)
+           for q in qryArray:
+                 symptomsNameList.append(q.symptoms.primary_name)
+
+           diseaseQuery=DiseaseStore.query()
+           for s in symptomsNameList:
+                 cname=s.lower()
+                 diseaseQuery=diseaseQuery.filter(DiseaseStore.disease.symptoms.primary_name==cname)
+
+           diseaseList=[]
+           qryArray=[]
+           if diseaseQuery is not None:
+                 qryArray=diseaseQuery.fetch(limit=limit,offset=offset)
+           for q in qryArray:
+                 diseaseList.append(q.disease)
+         
+           return DiseaseListMessage(disease_list=diseaseList)
