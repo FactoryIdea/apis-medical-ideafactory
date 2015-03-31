@@ -107,10 +107,9 @@ class DiseaseInfoApi(remote.Service):
            for q in qryArray:
                  symptomsNameList.append(q.symptoms.primary_name)
 
-           diseaseQuery=DiseaseStore.query()
-           for s in symptomsNameList:
-                 cname=s.lower()
-                 diseaseQuery=diseaseQuery.filter(DiseaseStore.disease.symptoms.primary_name==cname)
+           diseaseQuery=DiseaseStore.query(DiseaseStore.disease.symptoms.primary_name
+                                           .IN(symptomsNameList))
+          
 
            diseaseList=[]
            qryArray=[]
