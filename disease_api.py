@@ -1,4 +1,4 @@
-#sample test file to test various apis
+#api for feteching disease information
 import endpoints
 from disease_api_messages import *
 from protorpc import messages
