@@ -31,9 +31,7 @@ class DiseaseAndSymptomsNameMessage(messages.Message):
 class DiseaseListMessage(messages.Message):
     disease_list=messages.MessageField(Disease,1,repeated=True)
 
-#Do no forget to delete this one
-class SListMessage(messages.Message):
-    s_list=messages.MessageField(Symptoms,1,repeated=True)
+
 #handles the storage of data in datastore
 class DiseaseStore(ndb.Model):
     disease=msgprop.MessageProperty(Disease,indexed_fields=['primary_name',
