@@ -99,13 +99,17 @@ class DiseaseInfoApi(remote.Service):
 
            if request.ds_name :
             query=query.filter(SymptomsStore.symptoms.secondry_names.name.IN(request.ds_name))
-
+           else :
+               return DiseaseListMessage(disease_list=[])  
            symptomsNameList=[]
            qryArray=[]
            if query is not None:
                  qryArray=query.fetch(limit=limit,offset=offset)
            for q in qryArray:
                  symptomsNameList.append(q.symptoms.primary_name)
+
+           
+                 
 
            diseaseQuery=DiseaseStore.query(DiseaseStore.disease.symptoms.primary_name
                                            .IN(symptomsNameList))
